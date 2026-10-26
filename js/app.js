@@ -1,3 +1,8 @@
+const courseForm = document.querySelector("#course-form");
+const courseFields = document.querySelector("#course-fields");
+const courseNameInput = document.querySelector("#course-name");
+const courseCodeInput = document.querySelector("#course-code");
+const courseMessage = document.querySelector("#course-message");
 const taskForm = document.querySelector("#task-form");
 const taskFields = document.querySelector("#task-fields");
 const titleInput = document.querySelector("#task-title");
@@ -14,7 +19,13 @@ function showMessage(message, isError = false) {
   taskMessage.classList.toggle("error-message", isError);
 }
 
+function showCourseMessage(message, isError = false) {
+  courseMessage.textContent = message;
+  courseMessage.classList.toggle("error-message", isError);
+}
+
 function renderCourses() {
+  const selectedCourseId = courseInput.value;
   const courseList = document.querySelector("#course-list");
   courseList.replaceChildren();
   courseInput.replaceChildren();
@@ -28,8 +39,46 @@ function renderCourses() {
     option.textContent = label;
     courseInput.append(option);
   }
+  if (studyData.courses.some(course => course.id === selectedCourseId)) {
+    courseInput.value = selectedCourseId;
+  }
   taskFields.disabled = studyData.courses.length === 0;
 }
+
+courseForm.addEventListener("submit", event => {
+  event.preventDefault();
+  if (courseFields.disabled) return;
+
+  const name = courseNameInput.value.trim();
+  if (!name) {
+    courseNameInput.setAttribute("aria-invalid", "true");
+    showCourseMessage("Enter a course name containing more than spaces.", true);
+    courseNameInput.focus();
+    return;
+  }
+  courseNameInput.removeAttribute("aria-invalid");
+
+  let id;
+  do {
+    id = `course-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  } while (studyData.courses.some(course => course.id === id));
+  const course = { id, name, code: courseCodeInput.value.trim() };
+  const nextData = { ...studyData, courses: [...studyData.courses, course] };
+
+  try {
+    StudyStorage.saveData(nextData);
+  } catch (error) {
+    showCourseMessage("Could not save the course. Check browser storage permissions or available space and try again.", true);
+    return;
+  }
+
+  studyData = nextData;
+  renderCourses();
+  showCourseMessage("Course added.");
+  showMessage("Ready to manage your tasks.");
+  courseForm.reset();
+  courseNameInput.focus();
+});
 
 function localToday() {
   const now = new Date();
@@ -162,9 +211,12 @@ async function initializeApp() {
     studyData = await StudyStorage.loadData();
     renderCourses();
     renderTasks();
+    courseFields.disabled = false;
+    showCourseMessage("Ready to add courses.");
     showMessage(studyData.courses.length ? "Ready to manage your tasks." :
-      "No courses available. A course must be added before creating tasks. Course creation is planned for a later step.");
+      "No courses available. Add a course in the Courses section before creating tasks.");
   } catch (error) {
+    showCourseMessage("Could not load study data. Refresh after checking Live Server and browser storage permissions. Existing saved data has not been replaced.", true);
     showMessage("Could not load study data. Run with Live Server and check browser storage permissions. Existing saved data has not been replaced.", true);
   }
 }

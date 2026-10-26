@@ -33,6 +33,23 @@
 
       <section id="courses" aria-labelledby="courses-heading">
         <h2 id="courses-heading">Courses</h2>
+        <p id="course-message" role="status" aria-live="polite">Loading courses…</p>
+        <form id="course-form" novalidate>
+          <fieldset id="course-fields" disabled>
+            <legend>Add a course</legend>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="course-name">Course name (required)</label>
+                <input id="course-name" name="name" type="text" required aria-describedby="course-message">
+              </div>
+              <div class="form-field">
+                <label for="course-code">Course code (optional)</label>
+                <input id="course-code" name="code" type="text">
+              </div>
+            </div>
+            <button type="submit">Add course</button>
+          </fieldset>
+        </form>
         <ul id="course-list"></ul>
       </section>
 
