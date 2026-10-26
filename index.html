@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple place to organize courses and study tasks.">
+    <title>AI Study Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/storage.js" defer></script>
+    <script src="js/stats.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container">
+        <h1>AI Study Tracker</h1>
+        <p>Organize your studies, one task at a time.</p>
+
+        <nav aria-label="Main navigation">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#courses">Courses</a>
+          <a href="#tasks">Tasks</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="container" tabindex="-1">
+      <section id="dashboard" aria-labelledby="dashboard-heading">
+        <h2 id="dashboard-heading">Dashboard</h2>
+      </section>
+
+      <section id="courses" aria-labelledby="courses-heading">
+        <h2 id="courses-heading">Courses</h2>
+        <ul id="course-list"></ul>
+      </section>
+
+      <section id="tasks" aria-labelledby="tasks-heading">
+        <h2 id="tasks-heading">Tasks</h2>
+        <p id="task-message" role="status" aria-live="polite">Loading tasks…</p>
+        <form id="task-form" novalidate>
+          <fieldset id="task-fields" disabled>
+            <legend>Add a task</legend>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="task-title">Task title (required)</label>
+                <input id="task-title" name="title" type="text" required>
+              </div>
+              <div class="form-field">
+                <label for="task-course">Course (required)</label>
+                <select id="task-course" name="course" required></select>
+              </div>
+              <div class="form-field">
+                <label for="task-priority">Priority (required)</label>
+                <select id="task-priority" name="priority" required>
+                  <option value="Low">Low</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="task-due-date">Due date (required)</label>
+                <input id="task-due-date" name="dueDate" type="date" required>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="task-notes">Notes (optional)</label>
+              <textarea id="task-notes" name="notes" rows="2"></textarea>
+            </div>
+            <button type="submit">Add task</button>
+          </fieldset>
+        </form>
+        <h3>Your tasks</h3>
+        <p id="task-empty" hidden>No tasks yet. Add your first task above.</p>
+        <ul id="task-list" class="task-list"></ul>
+      </section>
+    </main>
+
+    <footer class="container site-footer">
+      <p>AI Study Tracker — your personal study organizer.</p>
+    </footer>
+  </body>
+</html>

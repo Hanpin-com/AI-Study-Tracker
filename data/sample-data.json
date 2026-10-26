@@ -1,0 +1,20 @@
+{
+  "courses": [
+    {
+      "id": "course-1",
+      "name": "Introduction to Programming",
+      "code": "CS101"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "courseId": "course-1",
+      "title": "Review HTML basics",
+      "priority": "Medium",
+      "dueDate": "2026-11-02",
+      "completed": false,
+      "notes": "Review headings, links, and page structure."
+    }
+  ]
+}
